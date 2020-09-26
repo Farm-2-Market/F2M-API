@@ -1,9 +1,9 @@
-// const express = require("express");
+const express = require("express");
 // const mongoose = require("mongoose");
 // const config = require('./config.js')
-// const userRoutes = require('../routes/user.js');
+const userRoutes = require('../routes/user.js');
 // const assert = require('assert');
-// const app = express();
+const app = express();
 
 
 // const userColl = config.userCollName
@@ -11,15 +11,13 @@
 const mongoose = require("mongoose");
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const CONFIG = require('./config.js');
+const config = require('./config.js');
 const { ObjectID } = require('mongodb').ObjectID;
 const uri = config.uri;
 const dbName = config.dbName;
-const itemCollName = CONFIG.itemCollName;
-const userCollName = CONFIG.userCollName;
-const achievementCollName = CONFIG.achievementCollName;
 
-const client = new MongoClient(url, { useUnifiedTopology: true });
+
+const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 
 

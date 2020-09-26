@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.compiled.js",
-    "build": "babel server.js --out-file server.compiled.js",
-    "bcrypt": "npm install bcrypt"
+    "build": "babel server.js --out-file server.compiled.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +19,7 @@
   "homepage": "https://github.com/Farm-2-Market/F2M-API#readme",
   "dependencies": {
     "assert": "^2.0.0",
-    "bcrypt": "^5.0.0",
+    "bcrypt-nodejs": "0.0.3",
     "express": "^4.17.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.6",
