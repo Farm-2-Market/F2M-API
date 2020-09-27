@@ -9,6 +9,7 @@ InitiateMongoServer();
 app.use(bodyParser.json());
 // const server = http.createServer(app);
 app.get('/', (req, res) => {
+  console.log(port)
   res.send('Hello Amazon!')
 })
 
