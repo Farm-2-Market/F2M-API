@@ -6,12 +6,12 @@
 // const app = express();
 
 
-// // const userColl = config.userCollName
+// const userColl = config.userCollName
 
 // const mongoose = require("mongoose");
 // const MongoClient = require('mongodb').MongoClient;
 // const assert = require('assert');
-// const config = require('./config.js');
+
 // const { ObjectID } = require('mongodb').ObjectID;
 // const uri = config.uri;
 // const dbName = config.dbName;
@@ -60,3 +60,20 @@
 // });
 
 // module.exports = app;
+
+const mongoose = require("mongoose");
+const MongoClient = require('mongodb').MongoClient
+const config = require('./config.js');
+
+const InitiateMongoServer = async () => {
+  try {
+    await mongoose.connect(config.uri, {useNewUrlParser: true
+    });
+    console.log("woohoo!");
+  } catch (e) {
+    console.log(e)
+    throw e
+  }
+  };
+
+  module.exports = InitiateMongoServer;
