@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   console.log(port);
-  res.send('Hello Amazon!');
+  res.send(`Hello Amazon! ${port}`);
 });
 
 app.listen(port, () => {
