@@ -67,7 +67,7 @@ const config = require('./config.js');
 
 const InitiateMongoServer = async () => {
   try {
-    await mongoose.connect(config.uri, {useNewUrlParser: true
+    await mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true
     });
     console.log("woohoo!");
   } catch (e) {
