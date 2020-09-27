@@ -4,7 +4,7 @@ const port = process.env.PORT || 3000;
 
 // const server = http.createServer(app);
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello Amazon!')
 })
 
 app.listen(port, () => {
