@@ -1,3 +1,20 @@
+const mongoose = require("mongoose");
+const MongoClient = require('mongodb').MongoClient
+const config = require('./config.js');
+
+const InitiateMongoServer = async () => {
+  try {
+    await mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true
+    });
+    console.log("woohoo!");
+  } catch (e) {
+    console.log(e)
+    throw e
+  }
+  };
+
+  module.exports = InitiateMongoServer;
+
 // const express = require("express");
 // // const mongoose = require("mongoose");
 // // const config = require('./config.js')
@@ -60,20 +77,3 @@
 // });
 
 // module.exports = app;
-
-const mongoose = require("mongoose");
-const MongoClient = require('mongodb').MongoClient
-const config = require('./config.js');
-
-const InitiateMongoServer = async () => {
-  try {
-    await mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true
-    });
-    console.log("woohoo!");
-  } catch (e) {
-    console.log(e)
-    throw e
-  }
-  };
-
-  module.exports = InitiateMongoServer;
