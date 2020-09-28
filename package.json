@@ -2,7 +2,7 @@
   "name": "f2m-api",
   "version": "1.0.0",
   "description": "api for farm to market app",
-  "main": "server.js",
+  "main": "server.compiled.js",
   "scripts": {
     "start": "node server.compiled.js",
     "build": "babel server.js --out-file server.compiled.js"

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const MongoClient = require('mongodb').MongoClient
-const config = require('./config.js');
+const config = require('/config.js');
 
 const InitiateMongoServer = async () => {
   try {
