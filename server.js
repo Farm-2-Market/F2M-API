@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const InitiateMongoServer = require('./database/database');
 const bodyParser=require('body-parser');
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 const port = process.env.PORT || 3000;
 
 
