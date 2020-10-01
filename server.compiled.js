@@ -17,10 +17,11 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
   res.send(`Hello Amazon! ${port}`);
 });
-app.get('/things', (req, res) => {
-  console.log('server');
-  res.send(['hello from the farm to market api']);
-});
+// app.get('/things', (req, res) => {
+//   console.log('server')
+//   res.send(['hello from the farm to market api'])
+// })
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
