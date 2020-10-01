@@ -1,27 +1,27 @@
-// const mongoose = require("mongoose");
-// const MongoClient = require('mongodb').MongoClient
-// const config = require('./config');
+const mongoose = require("mongoose");
+const MongoClient = require('mongodb').MongoClient
+const config = require('./config');
 
-// const InitiateMongoServer = async () => {
-//   console.log(config)
-//   try {
-//     await mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true
-//     });
-//     console.log("woohoo!");
-//   } catch (e) {
-//     console.log(e)
-//     throw e
-//   }
-//   };
+const InitiateMongoServer = async () => {
+  console.log(config)
+  try {
+    await mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true
+    });
+    console.log("woohoo!");
+  } catch (e) {
+    console.log(e)
+    throw e
+  }
+  };
 
-//   module.exports = InitiateMongoServer;
+  module.exports = InitiateMongoServer;
 
-// // const express = require("express");
-// // // const mongoose = require("mongoose");
-// // // const config = require('./config.js')
-// // const userRoutes = require('../routes/user.js');
-// // // const assert = require('assert');
-// // const app = express();
+// const express = require("express");
+// // const mongoose = require("mongoose");
+// // const config = require('./config.js')
+// const userRoutes = require('../routes/user.js');
+// // const assert = require('assert');
+// const app = express();
 
 
 // // const userColl = config.userCollName
