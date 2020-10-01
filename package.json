@@ -4,8 +4,7 @@
   "description": "api for farm to market app",
   "main": "server.js",
   "scripts": {
-    "start": "node server.compiled.js",
-    "build": "babel server.js --out-file server.compiled.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
