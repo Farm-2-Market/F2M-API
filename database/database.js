@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const MongoClient = require('mongodb').MongoClient
 const config = require('./config');
 
-const InitiateMongoServer = async () => {
+const db = async () => {
   console.log(config)
   try {
     await mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true
@@ -14,7 +14,7 @@ const InitiateMongoServer = async () => {
   }
   };
 
-  module.exports = InitiateMongoServer;
+  module.exports = db;
 
 // const express = require("express");
 // // const mongoose = require("mongoose");
