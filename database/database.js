@@ -1,10 +1,16 @@
 const mongoose = require("mongoose");
-const MongoClient = require('mongodb').MongoClient
+const bcrypt = require('bcrypt');
+const MongoClient = require('mongodb').MongoClient;
 const config = require('./config');
-
+const userModel = require('../models/userModels');
 const db = ()=>{
-  console.log('hello world')
-  }
+  mongoose.connect(
+    `mongodb+srv://FarmdDev:${config.password}@farm2market.lkakx.mongodb.net/${config.dbName}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true }
+  ).then(()=>{
+    console.log("connected to MONGO!!")
+  })
+}
+
 
 
   module.exports = db;
@@ -32,11 +38,11 @@ const db = ()=>{
 
 
 
-// // mongoose.connect(
-// //   `mongodb+srv://FarmdDev:${config.password}@farm2market.lkakx.mongodb.net/${config.dbName}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true }
-// // ).then(()=>{
-// //   console.log("connected to MONGO!!")
-// // })
+mongoose.connect(
+  `mongodb+srv://FarmdDev:${config.password}@farm2market.lkakx.mongodb.net/${config.dbName}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true }
+).then(()=>{
+  console.log("connected to MONGO!!")
+})
 
 // // mongoose.Promise = global.Promise;
 // // app.use((req, res, next) => {
