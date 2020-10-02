@@ -59,7 +59,7 @@ db()
       // response.send(result);
   }
  catch (error) {
-      response.status(500).send(error);
+      res.status(500).send(error);
   }
 });
 
