@@ -21,6 +21,7 @@ app.post("/signup", async (request, response) => {
   try {
     console.log('test', request);
       request.body.password = bcrypt.hashSync(request.body.password, 10);
+      console.log(request.body.password)
       var user = new UserModel(request.body);
       var result = await user.save();
       response.send(result);
