@@ -23,7 +23,7 @@ db()
   //user does not exist yet
   try {
     let newUser= new User({
-      _id: new ObjectID(),
+      _id: Mongoose.Schema.Types.ObjectId,
       email: `${req.body.email}`,
       username: `${req.body.username}`,
       password: `${req.body.password}`
@@ -36,7 +36,6 @@ db()
         if (err){
           throw err;
           User.findOne({ username:`${username}`,  function(err, user) {
-            console.log("inside findOne")
             if (err) throw err;
 
     // test a matching password
