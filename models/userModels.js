@@ -1,27 +1,24 @@
-// const mongoose = require('mongoose');
-
-// const userSchema = mongoose.Schema({
-//     _id: mongoose.Schema.Types.ObjectId,
-//     email: {
-//         type: String,
-//         required: true,
-//         unique: true,
-//         // match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-//     },
-//     username: { type: String, required: true },
-//     password: { type: String, required: true }
-// });
-const mongoose = require('mongoose&#8217'),
+var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-    username: { type: String, required: true, index: { unique: true } },
+    _id: mongoose.Schema.Types.ObjectId,
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        // match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+    },
+    username: { type: String, required: true },
     password: { type: String, required: true }
 });
 
-UserSchema.pre(save, function(next) {
+
+
+
+UserSchema.pre('save', function(next) {
     var user = this;
 
 // only hash the password if it has been modified (or is new)
@@ -51,4 +48,4 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
     });
 };
 
-module.exports = mongoose.model(User, UserSchema);
+module.exports = mongoose.model('User', UserSchema);
