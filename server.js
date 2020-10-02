@@ -13,7 +13,7 @@ const bodyParser=require('body-parser');
 }));
 
 const UserModel = new Mongoose.model("user", {
-  _id: mongoose.Schema.Types.ObjectId,
+  _id: Mongoose.Schema.Types.ObjectId,
   email: {
       type: String,
       required: true,
