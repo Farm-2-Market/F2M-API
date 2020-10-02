@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.post("/signup", async (request, response) => {
   db();
   try {
-    console.log(request.body);
+    console.log('test', request.body);
       request.body.password = bcrypt.hashSync(request.body.password, 10);
       var user = new UserModel(request.body);
       var result = await user.save();
