@@ -16,7 +16,7 @@ const bodyParser=require('body-parser');
 
 app.use(bodyParser.json());
 // const server = http.createServer(app);
-app.post("/register", async (request, response) => {
+app.post("/signup", async (request, response) => {
   db();
   try {
     console.log(request.body);
