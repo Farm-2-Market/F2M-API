@@ -27,6 +27,7 @@ db()
       username: `${username}`,
       password: `${password}`
     })
+    console.log(newUser)
     // console.log('test', request);
       // request.body.password = bcrypt.hashSync(request.body.password, 10);
       newUser.save((err)=>{
