@@ -36,6 +36,7 @@ db()
         if (err){
           throw err;
           User.findOne({ username:`${username}`,  function(err, user) {
+            console.log("inside findOne")
             if (err) throw err;
 
     // test a matching password
