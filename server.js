@@ -23,7 +23,7 @@ db()
   //user does not exist yet
   try {
     let newUser= new User({
-      _id: Mongoose.Schema.Types.ObjectId,
+      _id: Mongoose.Schema.Types.ObjectId(),
       email: `${req.body.email}`,
       username: `${req.body.username}`,
       password: `${req.body.password}`
