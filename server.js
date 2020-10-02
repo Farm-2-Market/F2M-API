@@ -19,13 +19,14 @@ app.use(bodyParser.json());
 app.post("/signup", async (req, res) => {
   // make db queryies and res.json the data
 db()
-let newUser= new User({
-  email: `${email}`,
-  username: `${username}`,
-  password: `${password}`
-})
+
   //user does not exist yet
   try {
+    let newUser= new User({
+      email: `${email}`,
+      username: `${username}`,
+      password: `${password}`
+    })
     // console.log('test', request);
       // request.body.password = bcrypt.hashSync(request.body.password, 10);
       newUser.save((err)=>{
