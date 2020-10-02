@@ -23,11 +23,11 @@ db()
   //user does not exist yet
   try {
     let newUser= new User({
-      email: `${email}`,
-      username: `${username}`,
-      password: `${password}`
+      email: `${req.body.email}`,
+      username: `${req.body.username}`,
+      password: `${req.body.password}`
     })
-    console.log(newUser)
+    console.log('try')
     // console.log('test', request);
       // request.body.password = bcrypt.hashSync(request.body.password, 10);
       newUser.save((err)=>{
