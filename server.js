@@ -16,17 +16,18 @@ const User = require('./models/userModels');
 
 app.use(bodyParser.json());
 // const server = http.createServer(app);
-app.post("/signup", async (request, response) => {
-  db();
+app.post("/signup", async (req, res) => {
+  // make db queryies and res.json the data
+db()
+let newUser= new User({
+  email: `${email}`,
+  username: `${username}`,
+  password: `${password}`
+})
+  //user does not exist yet
   try {
     // console.log('test', request);
       // request.body.password = bcrypt.hashSync(request.body.password, 10);
-
-      let newUser= new User({
-        email: `${email}`,
-        username: `${username}`,
-        password: `${password}`
-      })
       newUser.save((err)=>{
         if (err){
           throw err;
