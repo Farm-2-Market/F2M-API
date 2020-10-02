@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors')
 const bcrypt = require('bcrypt');
 const app = express();
-const UserModel = require('./models/userModels');
+// const UserModel = require('./models/userModels');
 const port = process.env.PORT || 3000;
 const db = require('./database/database');
 const bodyParser=require('body-parser');
@@ -11,7 +11,17 @@ const bodyParser=require('body-parser');
   extended: true
 }));
 
-
+const UserModel = new Mongoose.model("user", {
+  _id: mongoose.Schema.Types.ObjectId,
+  email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+  },
+  username: { type: String, required: true },
+  password: { type: String, required: true }
+});
 // InitiateMongoServer();
 
 app.use(bodyParser.json());
