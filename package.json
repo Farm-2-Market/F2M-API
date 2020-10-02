@@ -6,9 +6,6 @@
   "scripts": {
     "start": "node server.js"
   },
-  "engines": {
-    "node": "12.18.3"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Farm-2-Market/F2M-API.git"
