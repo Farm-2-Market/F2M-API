@@ -9,6 +9,7 @@ const db = ()=>{
   ).then(()=>{
     console.log("connected to MONGO!!")
   })
+
 }
 
 
