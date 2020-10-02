@@ -16,7 +16,9 @@ app.use(bodyParser.json());
 // const server = http.createServer(app);
 
 app.get('/', (req, res) => {
+  db();
   res.send(`Hello Amazon! ${port}`)
+
 })
 // app.get('/things', (req, res) => {
 //   console.log('server')

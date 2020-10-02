@@ -3,8 +3,9 @@ const MongoClient = require('mongodb').MongoClient
 const config = require('./config');
 
 const db = ()=>{
-  return 'hello world'
-}
+  console.log('hello world')
+  }
+
 
   module.exports = db;
 
