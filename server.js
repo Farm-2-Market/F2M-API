@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors')
 const bcrypt = require('bcrypt');
 const app = express();
+const Mongoose=require('mongoose');
 // const UserModel = require('./models/userModels');
 const port = process.env.PORT || 3000;
 const db = require('./database/database');
