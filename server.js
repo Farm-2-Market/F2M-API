@@ -31,6 +31,7 @@ db()
     // console.log('test', request);
       // request.body.password = bcrypt.hashSync(request.body.password, 10);
       newUser.save((err)=>{
+        console.log('inside save')
         if (err){
           throw err;
           User.findOne({ username:`${username}`,  function(err, user) {
