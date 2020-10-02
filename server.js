@@ -2,8 +2,7 @@ const express = require('express');
 const cors = require('cors')
 const app = express();
 const port = process.env.PORT || 3000;
-const config = require('./fileconfig')
-const db = require('./file');
+const db = require('./database/database');
 const bodyParser=require('body-parser');
   app.use(cors())
   app.use(bodyParser.urlencoded({
