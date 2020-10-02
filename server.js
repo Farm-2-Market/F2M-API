@@ -47,7 +47,7 @@ app.post("/signup", async (request, response) => {
 }
           })
         }
-      }
+      })
 
 
 
@@ -55,7 +55,8 @@ app.post("/signup", async (request, response) => {
 
       // var result = await user.save();
       // response.send(result);
-  } catch (error) {
+  }
+ catch (error) {
       response.status(500).send(error);
   }
 });
