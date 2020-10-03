@@ -14,10 +14,10 @@ var UserSchema = new Schema({
     match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  token : {
-    type : String
-}
+  password: { type: String, required: true }
+//   token : {
+//     type : String
+// }
 });
 
 UserSchema.pre("save", function (next) {
