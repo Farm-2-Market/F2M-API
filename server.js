@@ -28,7 +28,6 @@ app.use(bodyParser.json());
 app.post("/signup", async (req, res) => {
   // make db queryies and res.json the data
   db();
-console.log(req)
   //user does not exist yet
   try {
     let newUser = new User({
