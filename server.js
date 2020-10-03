@@ -26,9 +26,7 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json());
 // const server = http.createServer(app);
 app.post("/signup", async (req, res) => {
-  // make db queryies and res.json the data
   db();
-  //user does not exist yet
   try {
     let newUser = new User({
       _id: Mongoose.Types.ObjectId(),
