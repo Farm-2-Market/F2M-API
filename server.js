@@ -55,6 +55,7 @@ db()
           })
         }
       })
+      res.status(200)
 
 
 
@@ -66,6 +67,7 @@ db()
  catch (error) {
       res.status(500).send(error);
   }
+
 });
 
 app.get('/', (req, res) => {
