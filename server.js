@@ -43,7 +43,7 @@ db()
   });
 
   // test a failing password
-  user.comparePassword('123Password', function(err, isMatch) {
+  user.comparePassword(`${req.body.password}`, function(err, isMatch) {
       if (err) console.log(err);
       console.log('123Password:', isMatch); // -> 123Password: false
   });
