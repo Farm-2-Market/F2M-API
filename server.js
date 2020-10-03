@@ -67,30 +67,30 @@ app.post("/signup", async (req, res) => {
 //   res.send(`Hello Amazon! ${port}`);
 // });
 
-app.post("/signup", async function (req, res) {
-  db();
-  try {
-        User.findOne({"username": req.body.username}, function (err,user) {
-                if(!user)
-                   return res.json({"Status":"username Not Valid"})
+// app.post("/signup", async function (req, res) {
+//   db();
+//   try {
+//         User.findOne({"username": req.body.username}, function (err,user) {
+//                 if(!user)
+//                    return res.json({"Status":"username Not Valid"})
 
-                user.comparePassword(req.body.password, function (err,isMatch) {
-                    if(!isMatch){
-                          return res.json({"Status":"Password Failed"})
-                    };
-                    user.generateToken( function (err,user) {
-                        if(err){
-                          res.status(400).send(err)
-                        }
-                        res.cookie('ths_auth',user.token).status(200).json({"Login Success":"True"})
-                    })​
-                })
-        })
-}
-  catch (error) {
-    res.status(500).send(error);
-  }
-})
+//                 user.comparePassword(req.body.password, function (err,isMatch) {
+//                     if(!isMatch){
+//                           return res.json({"Status":"Password Failed"})
+//                     };
+//                     user.generateToken( (err,user) {
+//                         if(err){
+//                           res.status(400).send(err)
+//                         }
+//                         res.cookie('ths_auth',user.token).status(200).json({"Login Success":"True"})
+//                     })​
+//                 })
+//         })
+// }
+//   catch (error) {
+//     res.status(500).send(error);
+//   }
+// })
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

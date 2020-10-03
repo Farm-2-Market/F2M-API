@@ -1,5 +1,4 @@
 config.js
-fileconfig.js
 # Dependency directories
 node_modules/
 # Elastic Beanstalk Files
