@@ -66,8 +66,9 @@ app.post("/signup", async (req, res) => {
 //   db();
 //   res.send(`Hello Amazon! ${port}`);
 // });
-app.post('/users/login', async(req, res) => {
+app.post('/login', async(req, res) => {
   //Login a registered user
+  console.log(req.body)
   try {
     User.findOne({ username: `${req.body.username}` }, function (err, user) {
       if (err){
@@ -96,7 +97,10 @@ app.post('/users/login', async(req, res) => {
   //     res.status(400).send(error)
   // }
 
-}
+}catch (error) {
+      res.status(400).send(error)
+  }
+
 })
 
 app.listen(port, () => {
