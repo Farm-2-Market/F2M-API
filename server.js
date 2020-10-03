@@ -55,14 +55,11 @@ db()
           })
         }
       })
-      res.status(200)
-
-
 
       console.log(request.body.password)
 
       var result = await user.save();
-      response.send("hello postman");
+      res.send("hello postman");
   }
  catch (error) {
       res.status(500).send(error);
