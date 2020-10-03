@@ -22,7 +22,6 @@ db()
 
   //user does not exist yet
   try {
-    console.log(Mongoose.Types.ObjectId())
     let newUser= new User({
       _id: Mongoose.Types.ObjectId(),
       email: `${req.body.email}`,
