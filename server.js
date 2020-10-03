@@ -22,18 +22,14 @@ db()
 
   //user does not exist yet
   try {
-    console.log("first", req.body.password)
     let newUser= new User({
       _id: Mongoose.Types.ObjectId(),
       email: `${req.body.email}`,
       username: `${req.body.username}`,
       password: `${req.body.password}`
     })
-    console.log('try')
-    // console.log('test', request);
-      // request.body.password = bcrypt.hashSync(request.body.password, 10);
+
       newUser.save((err)=>{
-        console.log('inside save')
         if (err){
           console.log(err);
           User.findOne({ username:`${username}`,  function(err, user) {
@@ -59,7 +55,7 @@ db()
       console.log(request.body.password)
 
       var result = await user.save();
-      res.send("hello postman");
+      res.status(200).send("hello")
   }
  catch (error) {
       res.status(500).send(error);
