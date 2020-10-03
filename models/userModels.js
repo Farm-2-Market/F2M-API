@@ -1,9 +1,9 @@
 const mongoose = require("mongoose"),
   Schema = mongoose.Schema,
   jwt = require("jsonwebtoken"),
-  require('dotenv').config();
   bcrypt = require("bcrypt"),
   SALT_WORK_FACTOR = 10;
+  require('dotenv').config();
 
 var UserSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
@@ -13,11 +13,17 @@ var UserSchema = new Schema({
     unique: true,
     match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  username: {
+    type: String,
+    required: true,
+    unique: true
+    },
+  password: {
+    type: String,
+    required: true },
   token : {
-    type : String
-}
+    type : String,
+    required: true }
 });
 
 UserSchema.pre("save", function (next) {
@@ -45,7 +51,7 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     cb(null, isMatch);
   });
 };
-userSchema.methods.generateToken = function(cb){
+UserSchema.methods.generateToken = function(cb){
     var user = this;
     var token = jwt.sign(user._id.toHexString(),process.env.PASSWORD)
     user.token = token;
