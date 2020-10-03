@@ -46,7 +46,7 @@ db()
       if (err) console.log(err);
       console.log('123Password:', isMatch); // -> 123Password: false
   });
-}
+})
           })
         }
       })
@@ -59,8 +59,6 @@ db()
  catch (error) {
       res.status(500).send(error);
   }
-
-});
 
 app.get('/', (req, res) => {
   db();
