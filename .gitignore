@@ -8,3 +8,5 @@ node_modules/
 !.elasticbeanstalk/*.global.yml
 
 package-lock.json
+
+.env

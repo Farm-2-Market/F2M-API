@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const Mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const bodyParser = require("body-parser");
 const db = require("./database/database");
 const User = require("./models/userModels");
@@ -66,7 +69,22 @@ app.get("/", (req, res) => {
 //   console.log('server')
 //   res.send(['hello from the farm to market api'])
 // })
+  app.post('/login', (req,res)=>{
+    ​
+        User.findOne({"username": req.body.username},(err,user)=>{
+                if(!user)   return res.json({"Status":"username Not Valid"})
 
+                user.comparePassword(req.body.password,(err,isMatch)=>{
+                    if(!isMatch)    return res.json({"Status":"Password Failed"});
+
+                    user.generateToken((err,user)=>{
+                        if(err) return res.status(400).send(err);
+                        res.cookie('ths_auth',user.token).status(200).json({"Login Success":"True"});
+                    })
+    ​
+                })
+        })
+})
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
