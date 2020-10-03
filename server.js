@@ -62,7 +62,7 @@ db()
       console.log(request.body.password)
 
       var result = await user.save();
-      response.send(result);
+      response.send("hello postman");
   }
  catch (error) {
       res.status(500).send(error);
