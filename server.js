@@ -59,10 +59,10 @@ db()
 
 
 
-      // console.log(request.body.password)
+      console.log(request.body.password)
 
-      // var result = await user.save();
-      // response.send(result);
+      var result = await user.save();
+      response.send(result);
   }
  catch (error) {
       res.status(500).send(error);
