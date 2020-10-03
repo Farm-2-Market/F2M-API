@@ -39,11 +39,11 @@ const db = ()=>{
 
 
 
-mongoose.connect(
-  `mongodb+srv://FarmdDev:${config.password}@farm2market.lkakx.mongodb.net/${config.dbName}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true }
-).then(()=>{
-  console.log("connected to MONGO!!")
-})
+// mongoose.connect(
+//   `mongodb+srv://FarmdDev:${config.password}@farm2market.lkakx.mongodb.net/${config.dbName}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true }
+// ).then(()=>{
+//   console.log("connected to MONGO!!")
+// })
 
 // // mongoose.Promise = global.Promise;
 // // app.use((req, res, next) => {

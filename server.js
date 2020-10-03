@@ -22,6 +22,7 @@ db()
 
   //user does not exist yet
   try {
+    console.log("first", req.body.password)
     let newUser= new User({
       _id: Mongoose.Types.ObjectId(),
       email: `${req.body.email}`,
@@ -36,10 +37,11 @@ db()
         if (err){
           throw err;
           User.findOne({ username:`${username}`,  function(err, user) {
+            console.log("user", user)
             if (err) throw err;
 
     // test a matching password
-    user.comparePassword('Password123', function(err, isMatch) {
+    user.comparePassword(`${req.body.password}`, function(err, isMatch) {
       if (err) throw err;
       console.log('Password123:', isMatch); // -> Password123: true
   });
