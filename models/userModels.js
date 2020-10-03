@@ -36,6 +36,7 @@ bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt){
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+    console.log("compare called")
     bcrypt.compare(candidatePassword, this.password, (err, isMatch)=>{
         if (err) return cb(err);
         cb(null, isMatch);
