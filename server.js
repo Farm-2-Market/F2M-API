@@ -68,27 +68,58 @@ app.post("/signup", async (req, res) => {
 //   res.send(`Hello Amazon! ${port}`);
 // });
 app.post("/login", async(req, res) => {
+  getUser = async (username)=>{
+    let user = await User.findOne({ username });
+    if (!user) {
+      throw new Error({ error: 'Invalid login credentials' })
+  };
+  console.log("getuser")
+  return user;
+  }
   db();
   //Login a registered user
-  console.log(req.body.password)
+  console.log("req body password", req.body.password)
   try {
-    const { username, password } = req.body
-    const user = await User.findByCredentials(username, password)
-    if (!user) {
-        return res.status(401).send({error: 'Login failed! Check authentication credentials'})
+    let user = await getUser(req.body.username);
+    console.log("user1", user)
+    if (user){
+      console.log("so true")
+      let match = await bcrypt.compare(req.body.password, user.password, function(err, res) {
+        if (err){
+          // handle error
+          console.log("ERROR!!!!: ", err)
+        }
+        if (res) {
+          // Send JWT
+          console.log("IT WORKED!!!!!!!!!!!!")
+        } else {
+          // response is OutgoingMessage object that server response http request
+          console.log('passwords do not match');
+        }
+      });
+      console.log("req pw", req.body.password)
+      console.log("user pw", user.password)
+      console.log("match", match)
+      delete user.password;
+      if (match){
+        console.log("user", user)
+        let token = jwt.sign(
+          {
+            data: {
+              name: user.username
+            },
+          },
+          jwtKey,
+          { expiresIn: "1h" }
+        )
+        console.log("token")
+      }
     }
-    const token = await user.generateAuthToken()
-    res.send({ user, token })
 } catch (error) {
     res.status(400).send(error)
 }
 
 })
-
-    } catch (error) {
-      res.status(500).send(error)
-    }
-  })
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
