@@ -35,20 +35,20 @@ db()
       newUser.save((err)=>{
         console.log('inside save')
         if (err){
-          throw err;
+          console.log(err);
           User.findOne({ username:`${username}`,  function(err, user) {
             console.log("user", user)
-            if (err) throw err;
+            if (err) console.log(err);
 
     // test a matching password
     user.comparePassword(`${req.body.password}`, function(err, isMatch) {
-      if (err) throw err;
+      if (err) console.log(err);
       console.log('Password123:', isMatch); // -> Password123: true
   });
 
   // test a failing password
   user.comparePassword('123Password', function(err, isMatch) {
-      if (err) throw err;
+      if (err) console.log(err);
       console.log('123Password:', isMatch); // -> 123Password: false
   });
 }
