@@ -42,6 +42,7 @@ app.post("/signup", async (req, res) => {
       if (err) {
         console.log(err);
       }
+
       User.findOne({ username: `${req.body.username}` }, function (err, user) {
         if (err) console.log(err);
 
@@ -66,46 +67,28 @@ app.post("/signup", async (req, res) => {
 //   db();
 //   res.send(`Hello Amazon! ${port}`);
 // });
-app.post("/signup", async (req, res) => {
+app.post("/login", async(req, res) => {
   db();
   //Login a registered user
-  console.log
+  console.log(req.body.password)
   try {
-    User.findOne({ username: `${req.body.username}` }, function (err, user) {
-      if (err){
-        res.send(400)
-         console.log(err);
-      }
-      // test a matching password
-      user.comparePassword(`${req.body.password}`, function (err, isMatch) {
-        if (err){
-           console.log(err);
-        }
-        if (!user) {
-          return res.status(401).send({error: 'Login failed! Check authentication credentials'})
-        console.log("Password Matches:", isMatch); // -> Password123: true
-        if (isMatch){
-          let token = await user.generateToken
-          res.send(user, token)
-        }
-      });
-    });
-
-  //     console.log(req.body)
-  //     let email = req.body.email;
-  //     let username = req.body.username;
-  //     let password =
-  //     const user = await User.findByCredentials(email, username password)
-  //     if (!user) {
-  //         return res.status(401).send({error: 'Login failed! Check authentication credentials'})
-  //     }
-  //     const token = await user.generateAuthToken()
-  //     res.send({ user, token })
-  } catch (error) {
-      res.status(400).send(error)
-  }
+    const { username, password } = req.body
+    const user = await User.findByCredentials(username, password)
+    if (!user) {
+        return res.status(401).send({error: 'Login failed! Check authentication credentials'})
+    }
+    const token = await user.generateAuthToken()
+    res.send({ user, token })
+} catch (error) {
+    res.status(400).send(error)
+}
 
 })
+
+    } catch (error) {
+      res.status(500).send(error)
+    }
+  })
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
