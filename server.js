@@ -66,31 +66,39 @@ app.post("/signup", async (req, res) => {
 //   db();
 //   res.send(`Hello Amazon! ${port}`);
 // });
+app.post('/users/login', async(req, res) => {
+  //Login a registered user
+  try {
+    User.findOne({ username: `${req.body.username}` }, function (err, user) {
+      if (err){
+         console.log(err);
+      }
+      // test a matching password
+      user.comparePassword(`${req.body.password}`, function (err, isMatch) {
+        if (err){
+           console.log(err);
+        }
+        console.log("Password Matches:", isMatch); // -> Password123: true
+      });
+    });
 
-// app.post("/signup", async function (req, res) {
-//   db();
-//   try {
-//         User.findOne({"username": req.body.username}, function (err,user) {
-//                 if(!user)
-//                    return res.json({"Status":"username Not Valid"})
+  //     console.log(req.body)
+  //     let email = req.body.email;
+  //     let username = req.body.username;
+  //     let password =
+  //     const user = await User.findByCredentials(email, username password)
+  //     if (!user) {
+  //         return res.status(401).send({error: 'Login failed! Check authentication credentials'})
+  //     }
+  //     const token = await user.generateAuthToken()
+  //     res.send({ user, token })
+  // } catch (error) {
+  //     res.status(400).send(error)
+  // }
 
-//                 user.comparePassword(req.body.password, function (err,isMatch) {
-//                     if(!isMatch){
-//                           return res.json({"Status":"Password Failed"})
-//                     };
-//                     user.generateToken( (err,user) {
-//                         if(err){
-//                           res.status(400).send(err)
-//                         }
-//                         res.cookie('ths_auth',user.token).status(200).json({"Login Success":"True"})
-//                     })​
-//                 })
-//         })
-// }
-//   catch (error) {
-//     res.status(500).send(error);
-//   }
-// })
+}
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
