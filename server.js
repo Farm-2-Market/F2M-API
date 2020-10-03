@@ -32,6 +32,7 @@ db()
       newUser.save((err)=>{
         if (err){
           console.log(err);
+        }
           User.findOne({ username:`${username}`},   function (err, user) {
             if (err) console.log(err);
 
@@ -47,9 +48,9 @@ db()
       console.log('123Password:', isMatch); // -> 123Password: false
   });
 })
-          })
-        }
-      })
+
+        })
+
 
       console.log(request.body.password)
 
@@ -59,7 +60,7 @@ db()
  catch (error) {
       res.status(500).send(error);
   }
-
+})
 app.get('/', (req, res) => {
   db();
   res.send(`Hello Amazon! ${port}`)
