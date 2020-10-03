@@ -32,7 +32,7 @@ db()
       newUser.save((err)=>{
         if (err){
           console.log(err);
-          User.findOne({ username:`${username}`,  function(err, user) {
+          User.findOne({ username:`${username}`},   function (err, user) {
             if (err) console.log(err);
 
     // test a matching password
