@@ -42,6 +42,7 @@ app.post("/signup", async (req, res) => {
       if (err) {
         console.log(err);
       }
+
       User.findOne({ username: `${req.body.username}` }, function (err, user) {
         if (err) console.log(err);
 
@@ -66,31 +67,60 @@ app.post("/signup", async (req, res) => {
 //   db();
 //   res.send(`Hello Amazon! ${port}`);
 // });
+app.post("/login", async(req, res) => {
+  getUser = async (username)=>{
+    let user = await User.findOne({ username });
+    if (!user) {
+      throw new Error({ error: 'Invalid login credentials' })
+  };
+  console.log("getuser")
+  return user;
+  }
+  db();
+  //Login a registered user
+  console.log("req body password", req.body.password)
+  try {
+    let user = await getUser(req.body.username);
+    console.log("user1", user)
+    if (user){
+      console.log("so true")
+      let match = await bcrypt.compare(req.body.password, user.password, function(err, res) {
+        if (err){
+          // handle error
+          console.log("ERROR!!!!: ", err)
+        }
+        if (res) {
+          // Send JWT
+          console.log("IT WORKED!!!!!!!!!!!!")
+        } else {
+          // response is OutgoingMessage object that server response http request
+          console.log('passwords do not match');
+        }
+      });
+      console.log("req pw", req.body.password)
+      console.log("user pw", user.password)
+      console.log("match", match)
+      delete user.password;
+      if (match){
+        console.log("user", user)
+        let token = jwt.sign(
+          {
+            data: {
+              name: user.username
+            },
+          },
+          jwtKey,
+          { expiresIn: "1h" }
+        )
+        console.log("token")
+      }
+    }
+} catch (error) {
+    res.status(400).send(error)
+}
 
-// app.post("/signup", async function (req, res) {
-//   db();
-//   try {
-//         User.findOne({"username": req.body.username}, function (err,user) {
-//                 if(!user)
-//                    return res.json({"Status":"username Not Valid"})
+})
 
-//                 user.comparePassword(req.body.password, function (err,isMatch) {
-//                     if(!isMatch){
-//                           return res.json({"Status":"Password Failed"})
-//                     };
-//                     user.generateToken( (err,user) {
-//                         if(err){
-//                           res.status(400).send(err)
-//                         }
-//                         res.cookie('ths_auth',user.token).status(200).json({"Login Success":"True"})
-//                     })​
-//                 })
-//         })
-// }
-//   catch (error) {
-//     res.status(500).send(error);
-//   }
-// })
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
