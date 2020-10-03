@@ -66,12 +66,14 @@ app.post("/signup", async (req, res) => {
 //   db();
 //   res.send(`Hello Amazon! ${port}`);
 // });
-app.post('/login', async(req, res) => {
+app.post("/signup", async (req, res) => {
+  db();
   //Login a registered user
-  console.log(req.body)
+  console.log
   try {
     User.findOne({ username: `${req.body.username}` }, function (err, user) {
       if (err){
+        res.send(400)
          console.log(err);
       }
       // test a matching password
@@ -79,7 +81,13 @@ app.post('/login', async(req, res) => {
         if (err){
            console.log(err);
         }
+        if (!user) {
+          return res.status(401).send({error: 'Login failed! Check authentication credentials'})
         console.log("Password Matches:", isMatch); // -> Password123: true
+        if (isMatch){
+          let token = await user.generateToken
+          res.send(user, token)
+        }
       });
     });
 
@@ -93,11 +101,7 @@ app.post('/login', async(req, res) => {
   //     }
   //     const token = await user.generateAuthToken()
   //     res.send({ user, token })
-  // } catch (error) {
-  //     res.status(400).send(error)
-  // }
-
-}catch (error) {
+  } catch (error) {
       res.status(400).send(error)
   }
 
