@@ -32,64 +32,55 @@ app.use(function (req, res, next) {
 });
 
 // const server = http.createServer(app);
-app.post("/signup", async (req, res) => {
+app.post("/signup", async function (req, res) {
   try {
-    let newUser = new User({
-      _id: Mongoose.Types.ObjectId(),
-      email: `${req.body.email}`,
-      username: `${req.body.username}`,
-      password: `${req.body.password}`,
-    });
+let testUser = new User({
+  _id: Mongoose.Types.ObjectId(),
+  email: req.body.email,
+  username: req.body.username,
+  password: req.body.password
+});
+// save user to database
+User.findOne({ username: `${testUser.username}` }, function(err, user) {
+  if (!user){
+testUser.save(function(err) {
+  if (err){ throw err;}
 
-    newUser.save((err) => {
-      if (err) {
-        console.log(err);
+// fetch user and test password verification
+User.findOne({ username: req.body.username }, function(err, user) {
+  if (err) throw err;
+
+  // test a matching password
+  user.comparePassword(req.body.password, function(err, isMatch) {
+      if (err) {throw err;
       }
+      console.log('Password123:', isMatch);
+      return res.send('user created')
+  });
 
-      User.findOne({ username: `${req.body.username}` }, function (err, user) {
-        if (err) {
-          throw err;
-        }
-        // test a matching password
-        user.comparePassword(`${req.body.password}`, function (err, isMatch) {
-          if (err) throw err;
-          console.log(`${req.body.password}:`, isMatch); // -> Password123: true
-          console.log(
-            "I want to create an account that already exists",
-            isMatch
-          );
-        });
-
-        // test a failing password
-        user.comparePassword("123Password", function (err, isMatch) {
-          if (err) throw err;
-          console.log(`should be false: ${req.body.password}:`, isMatch); // -> 123Password: false
-        });
-      });
-
-      console.log(req.body.password);
-
-      // var result = user.save();
-      // res.status(200).send("hello");
+});
     });
+  }else{
+  console.log("user exists")
+  user.comparePassword(req.body.password, function(err, isMatch) {
+    if (err) throw err;
+    console.log('passwords match?:', isMatch); // -> Password123: true
+});
+
+// test a failing password
+// user.comparePassword('Password', function(err, isMatch) {
+//     if (err) throw err;
+//     console.log('Password:', isMatch); // -> 123Password: false
+// });
+  }
+})
   } catch (error) {
     res.status(500).send(error);
-
   }
 });
 
 app.post("/login", function (req, res){
-  User.findOne({ username: `${req.body.username}` }, function (err, user) {
-    if (err) {
-      throw err;
-    }
-    // test a matching password
-    user.comparePassword(`${req.body.password}`, function (err, isMatch) {
-      if (err) throw err;
-      console.log(`pw: ${req.body.password} match?:`, isMatch); // -> Password123: true
-
-    })
-})
+  console.log(req.body)
 })
 
 //   console.log("request")
