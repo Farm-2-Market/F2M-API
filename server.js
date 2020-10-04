@@ -34,109 +34,77 @@ app.use(function (req, res, next) {
 // const server = http.createServer(app);
 app.post("/signup", async function (req, res) {
   try {
-let testUser = new User({
-  _id: Mongoose.Types.ObjectId(),
-  email: req.body.email,
-  username: req.body.username,
-  password: req.body.password
-});
-// save user to database
-User.findOne({ username: `${testUser.username}` }, function(err, user) {
-  if (!user){
-testUser.save(function(err) {
-  if (err){ throw err;}
-
-// fetch user and test password verification
-User.findOne({ username: req.body.username }, function(err, user) {
-  if (err) throw err;
-
-  // test a matching password
-  user.comparePassword(req.body.password, function(err, isMatch) {
-      if (err) {throw err;
-      }
-      console.log('Password123:', isMatch);
-      return res.send('user created')
-  });
-
-});
+    let testUser = new User({
+      _id: Mongoose.Types.ObjectId(),
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
     });
-  }else{
-  res.send("user exists")
-  user.comparePassword(req.body.password, function(err, isMatch) {
-    if (err) throw err;
-    console.log('passwords match?:', isMatch); // -> Password123: true
-});
+    // save user to database
+    User.findOne({ username: `${testUser.username}` }, function (err, user) {
+      if (!user) {
+        testUser.save(function (err) {
+          if (err) {
+            throw err;
+          }
 
-// test a failing password
-// user.comparePassword('Password', function(err, isMatch) {
-//     if (err) throw err;
-//     console.log('Password:', isMatch); // -> 123Password: false
-// });
-  }
-})
+          // fetch user and test password verification
+          User.findOne({ username: req.body.username }, function (err, user) {
+            if (err) throw err;
+
+            // test a matching password
+            user.comparePassword(req.body.password, function (err, isMatch) {
+              if (err) {
+                throw err;
+              }
+              console.log("Password123:", isMatch);
+              return res.send("user created");
+            });
+          });
+        });
+      } else {
+        res.send("user exists");
+        user.comparePassword(req.body.password, function (err, isMatch) {
+          if (err) throw err;
+          console.log("passwords match?:", isMatch); // -> Password123: true
+        });
+
+        // test a failing password
+        // user.comparePassword('Password', function(err, isMatch) {
+        //     if (err) throw err;
+        //     console.log('Password:', isMatch); // -> 123Password: false
+        // });
+      }
+    });
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-app.post("/login", function (req, res){
-  console.log(req.body)
+app.post("/login", function (req, res) {
+  console.log(req.body);
   try {
-    User.findOne({ username: `${req.body.username}` }, function(err, user) {
-      if (!user){
-        res.send("username not found")
-    } else{
-      res.send("user exists")
-      user.comparePassword(req.body.password, function(err, isMatch) {
-        if (err) throw err;
-        console.log('passwords match?:', isMatch); // -> Password123: true
-    });
-
-    // test a failing password
-    // user.comparePassword('Password', function(err, isMatch) {
-    //     if (err) throw err;
-    //     console.log('Password:', isMatch); // -> 123Password: false
-    // });
-      }
-     })
-     } catch (error) {
-        res.status(500).send(error);
+    User.findOne({ username: `${req.body.username}` }, function (err, user) {
+      if (!user) {
+        res.send("username not found");
+      } else {
+        res.send("user exists");
+        user.comparePassword(req.body.password, function (err, isMatch) {
+          if (err) throw err;
+          console.log("passwords match?:", isMatch);
+          user.generateToken((err, user)=>{
+            if (err){
+              throw err
+            }
+            console.log(user.token)
+          })
+        });
       }
     });
-
-//   console.log("request")
-//   db()
-//   User.findOne({ username: `${req.body.username}` }, function (err, user) {
-//     console.log("find")
-//     if (err) {
-//       throw err;
-//     }
-//     if (!user) {
-//       return res.json({ Status: "Username Not Valid" });
-//     }
-//     console.log("user", user)
-//     // if the username is valid
-//     // test to see if a matching password has been provided
-//     user.comparePassword(req.body.password, function (err, isMatch) {
-//       if (err) {
-//         throw err;
-//       }
-//       // if it is a valid password create a JWT
-//       // if (isMatch) {
-//       //   console.log("Making tokens and stuff!");
-//       //   user.generateToken((err, user) => {
-//       //     if (err) {
-//       //       return res.status(400).send(err);
-//       //     }
-//       //     res
-//       //       .cookie("ths_auth", user.token)
-//       //       .status(200)
-//       //       .json({ "Login Success": "True" });
-//       //   });
-//       // }
-//     });
-//   });
-// });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
