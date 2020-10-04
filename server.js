@@ -61,7 +61,7 @@ User.findOne({ username: req.body.username }, function(err, user) {
 });
     });
   }else{
-  console.log("user exists")
+  res.send("user exists")
   user.comparePassword(req.body.password, function(err, isMatch) {
     if (err) throw err;
     console.log('passwords match?:', isMatch); // -> Password123: true
@@ -81,7 +81,28 @@ User.findOne({ username: req.body.username }, function(err, user) {
 
 app.post("/login", function (req, res){
   console.log(req.body)
-})
+  try {
+    User.findOne({ username: `${req.body.username}` }, function(err, user) {
+      if (!user){
+        res.send("username not found")
+    } else{
+      res.send("user exists")
+      user.comparePassword(req.body.password, function(err, isMatch) {
+        if (err) throw err;
+        console.log('passwords match?:', isMatch); // -> Password123: true
+    });
+
+    // test a failing password
+    // user.comparePassword('Password', function(err, isMatch) {
+    //     if (err) throw err;
+    //     console.log('Password:', isMatch); // -> 123Password: false
+    // });
+      }
+     })
+     } catch (error) {
+        res.status(500).send(error);
+      }
+    });
 
 //   console.log("request")
 //   db()
