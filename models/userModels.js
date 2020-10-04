@@ -38,15 +38,10 @@ UserSchema.pre("save", function (next) {
   });
 });
 
-// UserSchema.methods.comparePassword = function (candidatePassword, hashedPass, cb) {
-//   console.log("compare called");
-//   bcrypt.compare(candidatePassword, hashedPass, (err, isMatch) => {
-//     if (err) return cb(err, null);
-//     cb(null, isMatch);
-//   });
-// };
+
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    var user = this;
+    bcrypt.compare(candidatePassword, user.password, function(err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });

@@ -63,7 +63,7 @@ app.post("/signup", async (req, res) => {
         // test a failing password
         user.comparePassword("123Password", function (err, isMatch) {
           if (err) throw err;
-          console.log(`${req.body.password}:`, isMatch); // -> 123Password: false
+          console.log(`should be false: ${req.body.password}:`, isMatch); // -> 123Password: false
         });
       });
 
@@ -74,39 +74,57 @@ app.post("/signup", async (req, res) => {
     });
   } catch (error) {
     res.status(500).send(error);
+
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", function (req, res){
   User.findOne({ username: `${req.body.username}` }, function (err, user) {
     if (err) {
       throw err;
     }
-    if (!user) {
-      return res.json({ Status: "Username Not Valid" });
-    }
-    // if the username is valid
-    // test to see if a matching password has been provided
+    // test a matching password
     user.comparePassword(`${req.body.password}`, function (err, isMatch) {
-      if (err) {
-        throw err;
-      }
-      // if it is a valid password create a JWT
-      if (isMatch) {
-        console.log("Making tokens and stuff!");
-        user.generateToken((err, user) => {
-          if (err) {
-            return res.status(400).send(err);
-          }
-          res
-            .cookie("ths_auth", user.token)
-            .status(200)
-            .json({ "Login Success": "True" });
-        });
-      }
-    });
-  });
-});
+      if (err) throw err;
+      console.log(`pw: ${req.body.password} match?:`, isMatch); // -> Password123: true
+
+    })
+})
+})
+
+//   console.log("request")
+//   db()
+//   User.findOne({ username: `${req.body.username}` }, function (err, user) {
+//     console.log("find")
+//     if (err) {
+//       throw err;
+//     }
+//     if (!user) {
+//       return res.json({ Status: "Username Not Valid" });
+//     }
+//     console.log("user", user)
+//     // if the username is valid
+//     // test to see if a matching password has been provided
+//     user.comparePassword(req.body.password, function (err, isMatch) {
+//       if (err) {
+//         throw err;
+//       }
+//       // if it is a valid password create a JWT
+//       // if (isMatch) {
+//       //   console.log("Making tokens and stuff!");
+//       //   user.generateToken((err, user) => {
+//       //     if (err) {
+//       //       return res.status(400).send(err);
+//       //     }
+//       //     res
+//       //       .cookie("ths_auth", user.token)
+//       //       .status(200)
+//       //       .json({ "Login Success": "True" });
+//       //   });
+//       // }
+//     });
+//   });
+// });
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
