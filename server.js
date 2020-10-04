@@ -84,19 +84,8 @@ app.post("/login", async(req, res) => {
     console.log("user1", user)
     if (user){
       console.log("so true")
-      let match = await bcrypt.compare(req.body.password, user.password, function(err, res) {
-        if (err){
-          // handle error
-          console.log("ERROR!!!!: ", err)
-        }
-        if (res) {
-          // Send JWT
-          console.log("IT WORKED!!!!!!!!!!!!")
-        } else {
-          // response is OutgoingMessage object that server response http request
-          console.log('passwords do not match');
-        }
-      });
+      let match = await bcrypt.compare(req.body.password, user.password)
+      console.log("m23", match)
       console.log("req pw", req.body.password)
       console.log("user pw", user.password)
       console.log("match", match)
