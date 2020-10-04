@@ -3,7 +3,7 @@ const mongoose = require("mongoose"),
   jwt = require("jsonwebtoken"),
   bcrypt = require("bcrypt"),
   SALT_WORK_FACTOR = 10;
-  require('dotenv').config();
+require("dotenv").config();
 
 var UserSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
@@ -15,9 +15,9 @@ var UserSchema = new Schema({
   },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  token : {
-    type : String
-}
+  token: {type: String },
+  loginAttempts: { type: Number, required: true, default: 0 },
+  lockUntil: { type: Number },
 });
 
 UserSchema.pre("save", function (next) {
@@ -38,40 +38,23 @@ UserSchema.pre("save", function (next) {
   });
 });
 
-
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    let hp = this.password
-    bcrypt.compare(candidatePassword, hp, function(err, isMatch) {
-        console.log(hp)
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
+UserSchema.methods.comparePassword = function (candidatePassword, cb) {
+  let hp = this.password;
+  bcrypt.compare(candidatePassword, hp, function (err, isMatch) {
+    console.log(hp);
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
 };
 
-UserSchema.methods.generateToken = function(cb){
-    var user = this;
-    var token = jwt.sign(user._id.toHexString(), process.env.SECRET)
-    user.token = token;
-    user.save(function(err,user){
-        if(err) return cb(err);
-        cb(null,user);
-    })
+UserSchema.methods.generateToken = function (cb) {
+  var user = this;
+  var token = jwt.sign(user._id.toHexString(), process.env.SECRET);
+  user.token = token;
+  user.save(function (err, user) {
+    if (err) return cb(err);
+    cb(null, user);
+  });
 };
-
-
-// UserSchema.statics.findByCredentials = async (username, password) => {
-//   // Search for a user by email and password.
-//   console.log("inside find", email)
-//   const user = await User.findOne({ username} )
-
-//   if (!user) {
-//       throw new Error({ error: 'Invalid login credentials' })
-//   }
-//   const isPasswordMatch = await bcrypt.compare(password, user.password)
-//   if (!isPasswordMatch) {
-//       throw new Error({ error: 'Invalid login credentials' })
-//   }
-//   return user
-// }
 
 module.exports = mongoose.model("User", UserSchema);
