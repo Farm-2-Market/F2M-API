@@ -68,12 +68,6 @@ app.post("/signup", async function (req, res) {
           if (err) throw err;
           console.log("passwords match?:", isMatch); // -> Password123: true
         });
-
-        // test a failing password
-        // user.comparePassword('Password', function(err, isMatch) {
-        //     if (err) throw err;
-        //     console.log('Password:', isMatch); // -> 123Password: false
-        // });
       }
     });
   } catch (error) {
@@ -88,15 +82,16 @@ app.post("/login", function (req, res) {
       if (!user) {
         res.send("username not found");
       } else {
-        res.send("user exists");
+        // res.send("user exists");
         user.comparePassword(req.body.password, function (err, isMatch) {
           if (err) throw err;
           console.log("passwords match?:", isMatch);
           user.generateToken((err, user)=>{
             if (err){
-              throw err
+              res.send(err)
             }
             console.log(user.token)
+            res.send(user.token)
           })
         });
       }
