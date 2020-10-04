@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
-require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
-
+const config = require('./config');
 const userModel = require('../models/userModels');
+require('dotenv').config();
+
 const db = ()=>{
   mongoose.connect(
     `mongodb+srv://FarmdDev:${process.env.PASSWORD}@farm2market.lkakx.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true }
@@ -12,9 +13,6 @@ const db = ()=>{
   })
 
 }
-
-
-
   module.exports = db;
 
 // const express = require("express");
