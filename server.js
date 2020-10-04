@@ -57,7 +57,22 @@ app.post("/signup", async function (req, res) {
               if (err) {
                 throw err;
               }
+<<<<<<< HEAD
               console.log("Password123:", isMatch);
+=======
+              console.log("matching passwords:", isMatch);
+              if (isMatch){
+                user.generateToken((err, user)=>{
+                  if (err){
+                    res.send(err)
+                  }
+                  console.log(user.token)
+                  res.send(user.token)
+                })
+              } else {
+                res.send("passwords don't match")
+              }
+>>>>>>> 021bc5ad0d62109c52227815af5d8cdc6da88476
               return res.send("user created");
             });
           });
