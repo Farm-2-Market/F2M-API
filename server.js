@@ -32,80 +32,73 @@ app.use(function (req, res, next) {
 });
 
 // const server = http.createServer(app);
-app.post("/signup", async (req, res) => {
+app.post("/signup", async function (req, res) {
   try {
-    let newUser = new User({
+    let testUser = new User({
       _id: Mongoose.Types.ObjectId(),
-      email: `${req.body.email}`,
-      username: `${req.body.username}`,
-      password: `${req.body.password}`,
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
     });
+    // save user to database
+    User.findOne({ username: `${testUser.username}` }, function (err, user) {
+      if (!user) {
+        testUser.save(function (err) {
+          if (err) {
+            throw err;
+          }
 
-    newUser.save((err) => {
-      if (err) {
-        console.log(err);
+          // fetch user and test password verification
+          User.findOne({ username: req.body.username }, function (err, user) {
+            if (err) throw err;
+
+            // test a matching password
+            user.comparePassword(req.body.password, function (err, isMatch) {
+              if (err) {
+                throw err;
+              }
+              console.log("Password123:", isMatch);
+              return res.send("user created");
+            });
+          });
+        });
+      } else {
+        res.send("user exists");
+        user.comparePassword(req.body.password, function (err, isMatch) {
+          if (err) throw err;
+          console.log("passwords match?:", isMatch); // -> Password123: true
+        });
       }
-
-      User.findOne({ username: `${req.body.username}` }, function (err, user) {
-        if (err) {
-          throw err;
-        }
-        // test a matching password
-        user.comparePassword(`${req.body.password}`, function (err, isMatch) {
-          if (err) throw err;
-          console.log(`${req.body.password}:`, isMatch); // -> Password123: true
-          console.log(
-            "I want to create an account that already exists",
-            isMatch
-          );
-        });
-
-        // test a failing password
-        user.comparePassword("123Password", function (err, isMatch) {
-          if (err) throw err;
-          console.log(`${req.body.password}:`, isMatch); // -> 123Password: false
-        });
-      });
-
-      console.log(req.body.password);
-
-      // var result = user.save();
-      // res.status(200).send("hello");
     });
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-app.post("/login", async (req, res) => {
-  User.findOne({ username: `${req.body.username}` }, function (err, user) {
-    if (err) {
-      throw err;
-    }
-    if (!user) {
-      return res.json({ Status: "Username Not Valid" });
-    }
-    // if the username is valid
-    // test to see if a matching password has been provided
-    user.comparePassword(`${req.body.password}`, function (err, isMatch) {
-      if (err) {
-        throw err;
-      }
-      // if it is a valid password create a JWT
-      if (isMatch) {
-        console.log("Making tokens and stuff!");
-        // user.generateToken((err, user) => {
-        //   if (err) {
-        //     return res.status(400).send(err);
-        //   }
-        //   res
-        //     .cookie("ths_auth", user.token)
-        //     .status(200)
-        //     .json({ "Login Success": "True" });
-        // });
+app.post("/login", function (req, res) {
+  console.log(req.body);
+  try {
+    User.findOne({ username: `${req.body.username}` }, function (err, user) {
+      if (!user) {
+        res.send("username not found");
+      } else {
+        // res.send("user exists");
+        user.comparePassword(req.body.password, function (err, isMatch) {
+          if (err) throw err;
+          console.log("passwords match?:", isMatch);
+          user.generateToken((err, user)=>{
+            if (err){
+              res.send(err)
+            }
+            console.log(user.token)
+            res.send(user.token)
+          })
+        });
       }
     });
-  });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 app.listen(port, () => {
