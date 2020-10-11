@@ -116,6 +116,7 @@ app.post("/login", function (req, res) {
              throw err
             }
             console.log("passwords match?:", isMatch);
+            if (isMatch){
             user.generateToken((err, user)=>{
               if (err){
                 res.send(err)
@@ -124,6 +125,7 @@ app.post("/login", function (req, res) {
               // res.send(user.accessToken, user.refreshToken)
           res.send({user: user.username, accessToken: accessToken, refreshToken: refreshToken })
           })
+        }
         });
       } else {
         res.send("username and password combination not found")
