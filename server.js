@@ -10,12 +10,12 @@ const User = require("./models/userModels");
 const Schema = Mongoose.Schema;
 const app = express();
 const port = process.env.PORT || 3000;
+connectDB();
 
+//Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-connectDB();
-
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -28,8 +28,25 @@ app.use(function (req, res, next) {
   );
   next();
 });
+//Routes
+app.get('/tokenIssued', function (req, res){
+function authenticateToken(req, res, next){
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if (token == null){
+    return res.sendStatus(401)
+  }
+  jwt.verify(token, process.env.SECRET, (err, user) => {
+    console.log(err)
+    if (err){
+      return res.sendStatus(403)
+    }
+    req.user = user
+    next()
+  })
+}
+})
 
-// const server = http.createServer(app);
 app.post("/signup", async function (req, res) {
   try {
     //Object to create a new user
@@ -37,47 +54,50 @@ app.post("/signup", async function (req, res) {
       _id: Mongoose.Types.ObjectId(),
       email: req.body.email,
       username: req.body.username,
-      password: req.body.password,
+      password: req.body.password
     });
-    // save user to database
+    // Check to see if user already exists in database
     User.findOne({ username: `${newUser.username}` }, function (err, user) {
+      // if the user doesn't exist save the user to the database
       if (!user) {
         newUser.save(function (err) {
           if (err) {
             throw err;
           }
-
+          else {
+            return res.send("user created")
+        }
+        })
           // fetch user and test password verification
-          User.findOne({ username: req.body.username }, function (err, user) {
-            if (err) throw err;
+          // User.findOne({ username: req.body.username }, function (err, user) {
+            // if (err) throw err;
 
             // test a matching password
-            user.comparePassword(req.body.password, function (err, isMatch) {
-              if (err) {
-                throw err;
-              }
-              console.log("matching passwords:", isMatch);
-              if (isMatch){
-                user.generateToken((err, user)=>{
-                  if (err){
-                    res.send(err)
-                  }
-                  console.log(user.token)
-                  res.send(user.token)
-                })
-              } else {
-                res.send("passwords don't match")
-              }
-              return res.send("user created");
-            });
-          });
-        });
+            // user.comparePassword(req.body.password, function (err, isMatch) {
+            //   if (err) {
+            //     throw err;
+            //   }
+            //   console.log("matching passwords:", isMatch);
+            //   if (isMatch){
+            //     user.generateToken((err, user)=>{
+            //       if (err){
+            //         res.send(err)
+            //       }
+            //       console.log(user.token)
+            //       res.send(user.token)
+            //     })
+            //   } else {
+            //     res.send("passwords don't match")
+            //   }
+            // });
+          // });
       } else {
         res.send("user exists");
-        user.comparePassword(req.body.password, function (err, isMatch) {
-          if (err) throw err;
-          console.log("passwords match?:", isMatch); // -> Password123: true
-        });
+
+        // user.comparePassword(req.body.password, function (err, isMatch) {
+        //   if (err) throw err;
+        //   console.log("passwords match?:", isMatch); // -> Password123: true
+        // });
       }
     });
   } catch (error) {
@@ -89,28 +109,36 @@ app.post("/login", function (req, res) {
   console.log(req.body);
   try {
     User.findOne({ username: `${req.body.username}` }, function (err, user) {
-      if (!user) {
-        res.send("username not found");
-      } else {
+      if (user) {
         // res.send("user exists");
         user.comparePassword(req.body.password, function (err, isMatch) {
-          if (err) throw err;
-          console.log("passwords match?:", isMatch);
-          user.generateToken((err, user)=>{
-            if (err){
-              res.send(err)
+          if (err){
+             throw err
             }
-            console.log(user.token)
-            res.send(user.token)
+            console.log("passwords match?:", isMatch);
+            user.generateToken((err, user)=>{
+              if (err){
+                res.send(err)
+              }
+              console.log("access:", user.accessToken,"refresh:", user.refreshToken)
+              // res.send(user.accessToken, user.refreshToken)
+          res.send({user: user.username, accessToken: accessToken, refreshToken: refreshToken })
           })
         });
+      } else {
+        res.send("username and password combination not found")
       }
-    });
-  } catch (error) {
+    }
+   catch (error) {
     res.status(500).send(error);
   }
-});
+})
+// });
 
+app.post('/logout', (req, res) => {
+  const { token } = req.body;
+
+})
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`F2M app listening at http://localhost:${port}`);
 });
