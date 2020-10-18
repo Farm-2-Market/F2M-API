@@ -50,10 +50,10 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 };
 
 UserSchema.methods.generateToken = function (cb) {
-  var user = this;
-  console.log("secret", process.env.SECRET)
-  var token = jwt.sign({username: user.username}, process.env.SECRET, {expiresIn: '24h'});
-  user.token = token;
+  let user = this;
+  user.accessToken = jwt.sign({username: user.username}, process.env.SECRET, { expiresIn: '20m' });
+  user.refreshToken = jwt.sign({username: user.username}, process.env.REFRESH);
+
   user.save(function (err, user) {
     if (err) return cb(err);
     cb(null, user);

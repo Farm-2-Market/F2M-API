@@ -56,48 +56,24 @@ app.post("/signup", async function (req, res) {
       username: req.body.username,
       password: req.body.password
     });
+    console.log("NU", newUser)
     // Check to see if user already exists in database
     User.findOne({ username: `${newUser.username}` }, function (err, user) {
+      console.log("Q", !user)
       // if the user doesn't exist save the user to the database
-      if (!user) {
+      if (user) {
+        console.log("user exists console log")
+        res.send("user exists");
+      } else {
         newUser.save(function (err) {
           if (err) {
             throw err;
           }
           else {
+            console.log("created log")
             return res.send("user created")
         }
         })
-          // fetch user and test password verification
-          // User.findOne({ username: req.body.username }, function (err, user) {
-            // if (err) throw err;
-
-            // test a matching password
-            // user.comparePassword(req.body.password, function (err, isMatch) {
-            //   if (err) {
-            //     throw err;
-            //   }
-            //   console.log("matching passwords:", isMatch);
-            //   if (isMatch){
-            //     user.generateToken((err, user)=>{
-            //       if (err){
-            //         res.send(err)
-            //       }
-            //       console.log(user.token)
-            //       res.send(user.token)
-            //     })
-            //   } else {
-            //     res.send("passwords don't match")
-            //   }
-            // });
-          // });
-      } else {
-        res.send("user exists");
-
-        // user.comparePassword(req.body.password, function (err, isMatch) {
-        //   if (err) throw err;
-        //   console.log("passwords match?:", isMatch); // -> Password123: true
-        // });
       }
     });
   } catch (error) {
@@ -123,14 +99,15 @@ app.post("/login", function (req, res) {
               }
               console.log("access:", user.accessToken,"refresh:", user.refreshToken)
               // res.send(user.accessToken, user.refreshToken)
-          res.send({user: user.username, accessToken: accessToken, refreshToken: refreshToken })
+          res.send({user: user.username, accessToken: user.accessToken, refreshToken: user.refreshToken })
           })
         }
         });
       } else {
         res.send("username and password combination not found")
       }
-    }
+    })
+  }
    catch (error) {
     res.status(500).send(error);
   }
