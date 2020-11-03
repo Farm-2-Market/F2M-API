@@ -63,13 +63,13 @@ app.post("/signup", async function (req, res) {
       // if the user doesn't exist save the user to the database
       if (user) {
         console.log("user exists console log")
-        res.send("user exists");
+        return res.send("user exists");
       } else {
-        newUser.save(function (err) {
+        newUser.save(function (err, cb) {
+          console.log("save called")
           if (err) {
             throw err;
-          }
-          else {
+          } if (cb) {
             console.log("created log")
             return res.send("user created")
         }
@@ -103,8 +103,8 @@ app.post("/login", function (req, res) {
           })
         }
         });
-      } else {
-        res.send("username and password combination not found")
+      } if (!user){
+        console.log("get outta heah!")
       }
     })
   }
@@ -112,7 +112,6 @@ app.post("/login", function (req, res) {
     res.status(500).send(error);
   }
 })
-// });
 
 app.post('/logout', (req, res) => {
   const { token } = req.body;
