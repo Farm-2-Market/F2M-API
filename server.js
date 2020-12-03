@@ -101,6 +101,8 @@ app.post("/login", function (req, res) {
               // res.send(user.accessToken, user.refreshToken)
           res.send({user: user.username, accessToken: user.accessToken, refreshToken: user.refreshToken })
           })
+        } else {
+          res.sendStatus(401)
         }
         });
       } if (!user){
